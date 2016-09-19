@@ -1,0 +1,10 @@
+Format des fichiers de tests
+*******************************
+premiere ligne deux entiers l h , 0<l<300000, 0<h <1000
+deuxieme ligne un entier, le nombre de points 0<=n <=200000
+ensuite un point par ligne
+
+Le nom du fichier indique le nombre de points et la valeur attendue
+ex500_7616: 500 points, valeur attendue 7616
+
+ex=* et exT* indiquent que les donnees ont une propriete particuliere - regardez les fichiers- qui peut eventuellement influencer le temps d'execution de votre algorithme, selon l'algorithme. 
