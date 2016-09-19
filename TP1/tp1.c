@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 struct point_s {
-  int x;
-  int y;
+  unsigned long int x;
+  unsigned long int y;
 };
 
 typedef struct point_s* point;
@@ -16,31 +16,77 @@ typedef struct point_s* point;
 void res (int l, int h, int n, point* points){
   point actual;
   point point1, point2;
-  int surface = 0;
-  int minOrd = h;
+  unsigned long int surface = 0;
 
-  for(int i = 0; i<n-1; i++){
+  point1 = malloc(sizeof(point));
+  point2 = malloc(sizeof(point));
+
+  /* Pour i allant de 0 à n - 2 (du début jusque l'avant dernier) */
+  for(int i = 0; i < n - 1; i++){
+    unsigned long int minOrd = h;
     actual = points[i];
-    for(int j = i + 1; j<n; j++){
-      int surfaceTMP;
-      for(int k = i + 1; k<j; k++){
+
+    /* Pour j allant de i + 1 (voisin direct à droite) à n - 1 (tout les voisin de droites) */
+    for(int j = i + 1; j < n; j++){
+      unsigned long int surfaceTMP;
+
+      /* Pour k allant de i + 1 (voisin direct à droite) à j (tout les point entre le voisin direct à droite jusqu'au point d'indice j) */
+      for(int k = i + 1; k < j; k++){
         if(points[k]->y < minOrd)
           minOrd = points[k]->y;
       }
+
       surfaceTMP = (points[j]->x - points[i]->x) * minOrd;
       if(surface < surfaceTMP) {
         surface = surfaceTMP;
-        point1 =points[i];
+        point1->x = points[i]->x;
         point1->y = 0;
-        point2 = points[j];
+        point2->x = points[j]->x;
         point2->y = minOrd;
       }
     }
   }
-  printf("surface: %d, p1: (%d, %d), p2: (%d, %d)", surface, point1->x, point1->y, point2->x, point2->y);
+
+  printf("surface: %lu, p1: (%lu, %lu), p2: (%lu, %lu)", surface, point1->x, point1->y, point2->x, point2->y);
+
+  free(point1);
+  free(point2);
 }
 
 int main (char* argv[], int argc) {
-/*ajout (0,0) (l,0) */
-return 0;
+  unsigned long int n, l, h, i;
+  point* points;
+  point begin, end;
+
+  i = 0;
+
+  scanf("%lu %lu", &l, &h);
+  scanf("%lu", &n);
+
+  points = malloc((n + 2) * sizeof(point));
+  begin = malloc(sizeof(point));
+  begin->x = 0;
+  begin->y = 0;
+  points[i++] = begin;
+
+  for(;i < n + 1; i++) {
+    point actual = malloc(sizeof(point));
+    scanf("%lu %lu", &actual->x, &actual->y);
+    points[i] = actual;
+  }
+
+  end = malloc(sizeof(point));
+  end->x = l;
+  end->y = 0;
+  points[n + 1] = end;
+
+res(l, h, n + 2, points);
+
+  for(int j = 0; j < n + 2; j++) {
+    free(points[j]);
+  }
+
+  free(points);
+
+  return 0;
 }
