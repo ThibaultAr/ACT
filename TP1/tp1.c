@@ -27,12 +27,6 @@ void res (int l, int h, int n, point* points){
     for(int j = i + 1; j < n; j++){
       unsigned long int surfaceTMP;
 
-      /* Pour k allant de i + 1 (voisin direct à droite) à j (tout les point entre le voisin direct à droite jusqu'au point d'indice j) */
-      for(int k = i + 1; k < j; k++){
-        if(points[k].y < minOrd)
-          minOrd = points[k].y;
-      }
-
       surfaceTMP = (points[j].x - points[i].x) * minOrd;
       if(surface < surfaceTMP) {
         surface = surfaceTMP;
@@ -41,6 +35,9 @@ void res (int l, int h, int n, point* points){
         point2.x = points[j].x;
         point2.y = minOrd;
       }
+
+      if(points[j].y < minOrd)
+      minOrd = points[j].y;
     }
   }
 
