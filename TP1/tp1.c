@@ -146,7 +146,7 @@ int main (char* argv[], int argc) {
   /*res(l, h, n + 2, points);*/
 
   resDivide(l, h, n + 2, points, &surface, &p1, &p2);
-  printf("surface: %d, p1: (%d, %d), p2: (%d, %d)", surface, p1.x, p1.y, p2.x, p2.y);
+  printf("surface: %d, p1: (%d, %d), p2: (%d, %d)\n", surface, p1.x, p1.y, p2.x, p2.y);
 
   free(points);
 
