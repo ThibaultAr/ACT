@@ -24,7 +24,7 @@ void resDivide(int l, int h, int n, point* points, int* surface, point* point1, 
     point2->y = h;
     (*surface) = l * h;
   } else {
-    int minOrd = h, hidePoint = 0, ordEq = 1;
+    int minOrd = h, hidePoint = 0, ordEq = 0;
     int indicePoint, left, right, surfaceTMP;
     point pointLeft1, pointLeft2, pointRight1, pointRight2;
 
@@ -33,52 +33,38 @@ void resDivide(int l, int h, int n, point* points, int* surface, point* point1, 
         minOrd = points[i].y;
         indicePoint = i;
         hidePoint = 0;
+        ordEq = 0;
       }
+      if(points[i].y == points[indicePoint].y)
+        ordEq++;
       if(points[i].x == points[i - 1].x && points[i].y > minOrd)
         hidePoint++;
-      if(points[i].y != minOrd)
-        ordEq = 0;
     }
 
-    if(!ordEq) {
-      resDivide((points[indicePoint].x - points[0].x), h, indicePoint + 1, points, &left, &pointLeft1, &pointLeft2);
-      resDivide(points[n - 1].x - (points[indicePoint].x), h, n - indicePoint - hidePoint, points + indicePoint + hidePoint, &right, &pointRight1, &pointRight2);
+    if (ordEq)
+      ordEq = ordEq - 1;
 
-      surfaceTMP = l * minOrd;
-      point1->x = points[0].x;
-      point1->y = 0;
-      point2->x = l + points[0].x;
-      point2->y = minOrd;
+    resDivide((points[indicePoint].x - points[0].x), h, indicePoint + 1, points, &left, &pointLeft1, &pointLeft2);
+    resDivide(points[n - 1].x - (points[indicePoint].x), h, n - indicePoint - hidePoint - (ordEq / 2), points + indicePoint + (ordEq / 2) + hidePoint, &right, &pointRight1, &pointRight2);
 
-      if(surfaceTMP < left) {
-        surfaceTMP = left;
-        (*point1) = pointLeft1;
-        (*point2) = pointLeft2;
-      }
-      if(surfaceTMP < right) {
-        surfaceTMP = right;
-        (*point1) = pointRight1;
-        (*point2) = pointRight2;
-      }
+    surfaceTMP = l * minOrd;
+    point1->x = points[0].x;
+    point1->y = 0;
+    point2->x = l + points[0].x;
+    point2->y = minOrd;
 
-    } else {
-      if((points[n - 1].x - points[n - 2].x) * h > l * minOrd) {
-        surfaceTMP = (points[n - 1].x - points[n - 2].x) * h;
-        point1->x = points[n - 2].x;
-        point1->y = 0;
-        point2->x = points[n - 1].x;
-        point2->y = h;
-      } else {
-        surfaceTMP = l * minOrd;
-        point1->x = points[0].x;
-        point1->y = 0;
-        point2->x = points[n - 1].x;
-        point2->y = minOrd;
-      }
+    if(surfaceTMP < left) {
+      surfaceTMP = left;
+      (*point1) = pointLeft1;
+      (*point2) = pointLeft2;
+    }
+    if(surfaceTMP < right) {
+      surfaceTMP = right;
+      (*point1) = pointRight1;
+      (*point2) = pointRight2;
     }
 
-
-    (*surface) = surfaceTMP;
+  (*surface) = surfaceTMP;
   }
 }
 

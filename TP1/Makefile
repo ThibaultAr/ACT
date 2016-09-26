@@ -6,7 +6,7 @@ exec: compile
 	./tp1 < $(FILE)
 
 %: %.c
-	gcc $< -o $@
+	gcc $< -o $@ -g
 
 clean:
 	rm $(ALL)
