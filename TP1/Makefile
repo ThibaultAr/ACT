@@ -2,8 +2,8 @@ ALL = tp1
 
 compile: $(ALL)
 
-execute: compile
-	./tp1 $2
+exec: compile
+	./tp1 < $(FILE)
 
 %: %.c
 	gcc $< -o $@
