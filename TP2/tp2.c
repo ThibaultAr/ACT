@@ -55,14 +55,20 @@ int reduction(int k, struct palette_s palette, int n) {
   int res;
 
   for(int j = 0; j < n; j++) {
-    tab[j + 0 * n] = distanceMin(j, n, palette);
+    tab[j + 0 * n] = distanceMin(j, n - 1, palette);
   }
 
   for(int i = 1; i < k; i++) {
     for(int j = 0; j < n; j++) {
       int min = 0;
       for(int l = j + 1; l < n; l++) {
-        int tmp = distanceMin(j, l, palette) + tab[l + 1 + (i - 1) * n];
+        int tmp, checkDistance;
+        if(l == n - 1) {
+          checkDistance = tab[j + 0 * n];
+        } else {
+          checkDistance = distanceMin(j, l, palette);
+        }
+        tmp = checkDistance + tab[l + 1 + (i - 1) * n];
         if(min > tmp || min == 0) min = tmp;
       }
       tab[j + i * n] = min;
