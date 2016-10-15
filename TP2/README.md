@@ -19,7 +19,12 @@ $ ./tp2
 
 Question 2 :
 
-reduction_naive
+reduction_naive: O(n^n)
+
+$ ./tp2
+5096
+
+reduction (dynamique): O(k * n^2)
 
 $ ./tp2
 5096

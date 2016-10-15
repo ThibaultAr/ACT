@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct palette_s {
   int *pixels;
@@ -49,6 +50,40 @@ int reduction_naive(int k, struct palette_s palette, int n) {
   }
 }
 
+int reduction(int k, struct palette_s palette, int n) {
+  int *tab = malloc(k * n * sizeof(int));
+  int res;
+
+  for(int j = 0; j < n; j++) {
+    tab[j + 0 * n] = distanceMin(j, n, palette);
+  }
+
+  for(int i = 1; i < k; i++) {
+    for(int j = 0; j < n; j++) {
+      int min = tab[(j + 1) + (i - 1) * n] + tab[j + 0 * n];
+      for(int l = j + 1; l < n; l++) {
+        int tmp = distanceMin(j, l, palette) + tab[l + 1 + (i - 1) * n];
+        if(min > tmp) min = tmp;
+      }
+      tab[j + i * n] = min;
+    }
+  }
+
+  /* Render the array
+  for(int i = 0; i < k; i++) {
+    for(int j = 0; j < n; j++) {
+      printf("%d\t|\t", tab[j + i * n]);
+    }
+    printf("\n");
+  }
+  */
+
+  res = tab[0 + (k - 1) * n];
+  free(tab);
+
+  return res;
+}
+
 int main(){
   int pixels[7] = {0,20,100,132,164,180,255};
   int weight[7] = {5,5,1,1,2,1,10};
@@ -57,11 +92,15 @@ int main(){
   palette.pixels = pixels;
   palette.weight = weight;
   /* TEST QUESTION 1.1*/
-  /*printf("%d\n%d\n%d\n", meilleurGris(0, 1,palette),meilleurGris(2, 5,palette), meilleurGris(6, 7,palette));*/
+  /*printf("%d\n%d\n%d\n", meilleurGris(0, 1,palette),meilleurGris(2, 5,palette), meilleurGris(6, 6,palette));*/
 
   /*TEST QUESTION 1.2*/
-  /*printf("%d\n", distanceMin(0, 1,palette) + distanceMin(2, 5,palette) + distanceMin(6, 7,palette));*/
+  /*printf("%d\n", distanceMin(0, 1,palette) + distanceMin(2, 5,palette) + distanceMin(6, 6,palette));*/
 
-  printf("%d\n", reduction_naive(3, palette, 7));
+  /*TEST QUESTION 2*/
+  /*printf("%d\n", reduction_naive(3, palette, 7));*/
+
+  printf("%d\n", reduction(3, palette, 7));
+
   return 0;
 }
