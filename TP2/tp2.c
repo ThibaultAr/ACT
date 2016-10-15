@@ -60,16 +60,17 @@ int reduction(int k, struct palette_s palette, int n) {
 
   for(int i = 1; i < k; i++) {
     for(int j = 0; j < n; j++) {
-      int min = tab[(j + 1) + (i - 1) * n] + tab[j + 0 * n];
+      int min = 0;
       for(int l = j + 1; l < n; l++) {
         int tmp = distanceMin(j, l, palette) + tab[l + 1 + (i - 1) * n];
-        if(min > tmp) min = tmp;
+        if(min > tmp || min == 0) min = tmp;
       }
       tab[j + i * n] = min;
     }
   }
 
-  /* Render the array
+  /* Render the array */
+  /*
   for(int i = 0; i < k; i++) {
     for(int j = 0; j < n; j++) {
       printf("%d\t|\t", tab[j + i * n]);
