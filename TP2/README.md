@@ -16,3 +16,10 @@ distanceMin :
 
 $ ./tp2
 5096
+
+Question 2 :
+
+reduction_naive
+
+$ ./tp2
+5096
