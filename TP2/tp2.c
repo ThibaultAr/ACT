@@ -52,31 +52,34 @@ int reduction_naive(int k, struct palette_s palette, int n) {
 
 int reduction(int k, struct palette_s palette, int n) {
   int *tab = malloc(k * n * sizeof(int));
-  int *dst = malloc(n * n * sizeof(int));
+  //int *dst = malloc(n * n * sizeof(int));
+  int *dec = malloc(k * n * sizeof(int));
   int res;
 
   for(int j = 0; j < n; j++) {
-    for(int l = j; l < n; l++) {
+    /*for(int l = j; l < n; l++) {
       dst[j + l * n] = distanceMin(j, l, palette);
-    }
-    tab[j + 0 * n] = dst[j + (n - 1) * n];
+    }*/
+    tab[j + 0 * n] = distanceMin(j, n - 1, palette);
   }
 
   for(int i = 1; i < k; i++) {
     for(int j = 0; j < n; j++) {
       int min = 0;
       for(int l = j + 1; l < n; l++) {
-        int tmp = dst[j + l * n] + tab[l + 1 + (i - 1) * n];
+        int tmp = distanceMin(j, l, palette) + tab[l + 1 + (i - 1) * n];
         if(min > tmp || min == 0) {
           min = tmp;
+          dec[j + i * n] = l + 1;
         }
       }
       tab[j + i * n] = min;
     }
   }
 
-  /* Render the array */
+  /* Rende arrays */
 
+/*
   for(int i = 0; i < k; i++) {
     for(int j = 0; j < n; j++) {
       printf("%d\t|\t", tab[j + i * n]);
@@ -86,9 +89,18 @@ int reduction(int k, struct palette_s palette, int n) {
 
   printf("\n");
 
+  for(int i = 0; i < k; i++) {
+    for(int j = 0; j < n; j++) {
+      printf("%d\t|\t", dec[j + i * n]);
+    }
+    printf("\n");
+  }
+
+  printf("\n");
+*/
   res = tab[0 + (k - 1) * n];
   free(tab);
-  free(dst);
+  //free(dst);
 
   return res;
 }
@@ -109,7 +121,7 @@ int main(){
   /*TEST QUESTION 2*/
   /*printf("%d\n", reduction_naive(3, palette, 7));*/
 
-  printf("%d\n", reduction_naive(3, palette, 7));
+  printf("%d\n", reduction(3, palette, 7));
 
   return 0;
 }
