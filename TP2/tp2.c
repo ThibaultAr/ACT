@@ -127,10 +127,21 @@ int reduction(int k, struct palette_s palette, int n, struct palette_s * new_pal
   return res;
 }
 
+int plusProche(int pixel, int * palette, int n){
+  int actual;
+  int i = 0;
+  while(actual < ((pixel - palette[i]) * (pixel - palette[i]))) {
+    actual = ((pixel - palette[i]) * (pixel - palette[i]));
+    i++;
+  }
+  return actual;
+}
+
 void transImage(int pixels[], int n, int k) {
   int weight[256];
   int nbColors = 0, acc = 0;
   struct palette_s palette, new_palette;
+  int * new_pixels = malloc(n * sizeof(int));
 
   for(int i = 0; i < 256; i++)
     weight[i] = 0;
@@ -154,8 +165,9 @@ void transImage(int pixels[], int n, int k) {
 
   reduction(k, palette, nbColors, &new_palette);
 
-  printf("%d\n", new_palette.pixels[1]);
-
+  for(int i = 0; i < n; i++) {
+    new_pixels[i] = plusProche(pixels[i], new_palette.pixels, k);
+  }
 }
 
 int main(){
