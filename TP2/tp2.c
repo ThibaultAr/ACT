@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 struct palette_s {
   int *pixels;
@@ -61,14 +62,10 @@ int reduction_naive(int k, struct palette_s palette, int n) {
 
 int reduction(int k, struct palette_s palette, int n, struct palette_s * new_palette) {
   int *tab = malloc(k * n * sizeof(int));
-  //int *dst = malloc(n * n * sizeof(int));
   int *dec = malloc(k * n * sizeof(int));
   int res;
 
   for(int j = 0; j < n; j++) {
-    /*for(int l = j; l < n; l++) {
-      dst[j + l * n] = distanceMin(j, l, palette);
-    }*/
     tab[j + 0 * n] = distanceMin(j, n - 1, palette);
   }
 
@@ -122,19 +119,19 @@ int reduction(int k, struct palette_s palette, int n, struct palette_s * new_pal
 */
   res = tab[0 + (k - 1) * n];
   free(tab);
-  //free(dst);
+  free(dec);
 
   return res;
 }
 
 int plusProche(int pixel, int * palette, int n){
-  int actual;
+  int actual = INT_MAX;
   int i = 0;
-  while(actual < ((pixel - palette[i]) * (pixel - palette[i]))) {
-    actual = ((pixel - palette[i]) * (pixel - palette[i]));
+  while(actual > (pixel - palette[i]) * (pixel - palette[i]) && i < n) {
+    actual = (pixel - palette[i]) * (pixel - palette[i]);
     i++;
   }
-  return actual;
+  return palette[i - 1];
 }
 
 void transImage(int pixels[], int n, int k) {
@@ -167,6 +164,10 @@ void transImage(int pixels[], int n, int k) {
 
   for(int i = 0; i < n; i++) {
     new_pixels[i] = plusProche(pixels[i], new_palette.pixels, k);
+  }
+
+  for(int i = 0; i < n; i++) {
+    printf("%d\n", new_pixels[i]);
   }
 }
 
