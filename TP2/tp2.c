@@ -134,7 +134,7 @@ int plusProche(int pixel, int * palette, int n){
   return palette[i - 1];
 }
 
-void transImage(int pixels[], int n, int k) {
+void transImage(int pixels[], int n, int k, int width) {
   int weight[256];
   int nbColors = 0, acc = 0;
   struct palette_s palette, new_palette;
@@ -166,14 +166,27 @@ void transImage(int pixels[], int n, int k) {
     new_pixels[i] = plusProche(pixels[i], new_palette.pixels, k);
   }
 
+  printf("%d", new_palette.pixels[k - 1]);
+
   for(int i = 0; i < n; i++) {
-    printf("%d\n", new_pixels[i]);
+    if(i % width == 0)
+      printf("\n");
+    printf("%d ", new_pixels[i]);
+  }
+}
+
+void readImage(int *pixels, int n) {
+  int tmp;
+
+  scanf("%d\n", &tmp);
+  for(int i = 0; i < n; i++) {
+    scanf("%d", &pixels[i]);
   }
 }
 
 int main(){
 
-  int pixels[25] = {0,0,0,0,0,20,20,20,20,20,100,132,164,164,180,255,255,255,255,255,255,255,255,255,255};
+  int *pixels, width, height;
 /*
   int pixels[7] = {0,20,100,132,164,180,255};
   int weight[7] = {5,5,1,1,2,1,10};
@@ -192,7 +205,20 @@ int main(){
   /*TEST QUESTION 2*/
   /*printf("%d\n", reduction_naive(3, palette, 7));*/
 
-  transImage(pixels, 25, 3);
+  scanf("P2\n%d %d", &width, &height);
+
+  pixels = malloc(width * height * sizeof(int));
+
+  readImage(pixels, width * height);
+
+  /*for(int i = 0; i < width * height; i++) {
+    printf("%d ", pixels[i]);
+  }*/
+
+
+  printf("P2\n");
+  printf("%d %d\n", width, height);
+  transImage(pixels, width * height, 3, width);
 
   return 0;
 }
