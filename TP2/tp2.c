@@ -184,7 +184,7 @@ void readImage(int *pixels, int n) {
   }
 }
 
-int main(){
+int main(int argc, char *args[]){
 
   int *pixels, width, height;
 /*
@@ -211,14 +211,10 @@ int main(){
 
   readImage(pixels, width * height);
 
-  /*for(int i = 0; i < width * height; i++) {
-    printf("%d ", pixels[i]);
-  }*/
-
-
   printf("P2\n");
   printf("%d %d\n", width, height);
-  transImage(pixels, width * height, 3, width);
+
+  transImage(pixels, width * height, atoi(args[1]), width);
 
   return 0;
 }

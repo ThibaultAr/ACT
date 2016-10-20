@@ -3,7 +3,7 @@ ALL = tp2
 compile: $(ALL)
 
 exec: compile
-	./tp2 < $(FILE)
+	./tp2 $(COLORS) < $(FILE)
 
 %: %.c
 	gcc $< -o $@ -g
