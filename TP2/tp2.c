@@ -140,6 +140,11 @@ void transImage(int pixels[], int n, int k, int width) {
   struct palette_s palette, new_palette;
   int * new_pixels = malloc(n * sizeof(int));
 
+  if(k == 0) {
+    printf("%s\n", "Impossible de découper une image en 0 couleur");
+    exit(1);
+  }
+
   for(int i = 0; i < 256; i++)
     weight[i] = 0;
 
@@ -147,6 +152,11 @@ void transImage(int pixels[], int n, int k, int width) {
     weight[pixels[i]]++;
     if(weight[pixels[i]] == 1)
       nbColors++;
+  }
+
+  if(k > nbColors) {
+    printf("%s\n", "Impossible de découper une image en plus de couleur qu'il n'y a de couleur dans l'image");
+    exit(1);
   }
 
   palette.pixels = malloc(nbColors * sizeof(int));
