@@ -3,7 +3,7 @@ Dubois Yann
 
 langage: C
 
-Question 1:
+## Question 1:
 
 meilleur gris :
 
@@ -17,7 +17,7 @@ distanceMin :
 $ ./tp2
 5096
 
-Question 2 :
+## Question 2 :
 
 reduction_naive: O(n^n)
 
@@ -39,3 +39,13 @@ monte chaque ligne par l'indice indiqué par la case précdente et on coupe à l
 2	|	3	|	4	|	6	|	6	|	7	|	0	|
 
 5096
+
+## Question 5 :
+
+Imaginons que l'on fusionne 2 couleurs extrême d'un palette (c'est à dire la
+couleur au premier indice et celle du dernier indice). Alors si on fusionne ces 2
+couleurs, on se retrouvera avec une moyenne dont l'écart entre les 2 couleurs et
+très grande. De manière récursive, si on prend la couleur qui précéde la dernière couleur
+choisit, on fera descendre la distance minimal qui est proportionelle à la moyenne.
+Donc lorsque l'on fusionne 2 couleurs voisines, on obtient automatiquement la
+distance minimal.
