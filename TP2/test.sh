@@ -5,19 +5,21 @@ fi
 echo "*****************************"
 echo "Test sur Baboon_gray.pgm"
 echo ""
-make exec FILE=images-test/baboon_gray.pgm
+make exec FILE=images-test/baboon_gray.pgm COLORS=3
 
-echo "*****************************"
+echo -e "\n\n*****************************"
 echo "Test sur 1pix.pgm"
 echo ""
-make exec FILE=images-test/1pix.pgm
+make exec FILE=images-test/1pix.pgm COLORS=1
 
-echo "*****************************"
+echo -e "\n\n*****************************"
 echo "Test sur fin-palettes.pgm"
 echo ""
-make exec FILE=images-test/fin-palettes.pgm
+make exec FILE=images-test/fin-palettes.pgm COLORS=3
 
-echo "*****************************"
+echo -e "\n\n*****************************"
 echo "Test sur init-palettes.pgm"
 echo ""
-make exec FILE=images-test/init-palettes.pgm
+make exec FILE=images-test/init-palettes.pgm COLORS=3
+
+echo ""
