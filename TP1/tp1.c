@@ -104,7 +104,7 @@ void res (int l, int h, int n, point* points){
   printf("surface: %d, p1: (%d, %d), p2: (%d, %d)", surface, point1.x, point1.y, point2.x, point2.y);
 }
 
-int main (char* argv[], int argc) {
+int main (int argc, char* argv[]) {
   int n, l, h, i, surface;
   point* points;
   point begin, end, p1, p2;
@@ -132,7 +132,7 @@ int main (char* argv[], int argc) {
   /*res(l, h, n + 2, points);*/
 
   resDivide(l, h, n + 2, points, &surface, &p1, &p2);
-  printf("surface: %d, p1: (%d, %d), p2: (%d, %d)\n", surface, p1.x, p1.y, p2.x, p2.y);
+  printf("max area : %d\nmin x : %d\nmax x : %d\nmax y : %d\n", surface, p1.x, p2.x, p2.y);
 
   free(points);
 
