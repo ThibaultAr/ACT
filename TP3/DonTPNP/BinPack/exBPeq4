@@ -1,0 +1,24 @@
+9
+8
+2
+6
+5
+2
+5
+5
+2
+8
+
+
+//********************************************/
+8 objets: 2 6 5 2 5 5 2 8
+pour 4 sacs Pas de solution!
+pour 5 sacs: des solutions, par exemple la première dans l'ordre lexico:
+2:0
+6:0
+5:1
+2:1
+5:2
+5:3
+2:1
+8:4

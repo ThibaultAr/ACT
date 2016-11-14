@@ -53,7 +53,18 @@ n = 100 0000.
 - exCodeChef_49997500 P1: (5,0) P2: (100000,500)
 - ex=100000_1000000 P1: (0,0) P2: (100000,100)
 - ex=200000_2000000 P1: (0,0) P2: (200000,100)
-
-###Fichier qui fonctionne pas encore : (segfault -> algo récursif / pile)
 - exT100000_30011389 P1: (99189,0) P2: (250000,99)
 - exT200000_75141975 P1: (198225,0) P2: (500000,249)
+
+Il est plus efficace que le précédent pour tout les jeux de données.
+
+L'algo divise le tableau de points en 2 à chaque fois, il coupe là où se trouve
+le point d'ordonnée minimale à chaque itération. Lorqu'il y a plusieurs ordonnée
+minimale consécutif, on choisit le point qui se trouve au milieu de tous ces points.
+
+Il Le pire des cas est lorsque que le tableau de points est trié dans l'ordre croissant ou
+décroissant. Le meilleur des cas est lorsque l'ordonnée minimale se trouve toujours au milieu
+du tableau pour chaque itération.
+
+La fusion étant en O(n) et en divisant le tableau en 2, d'après le master Théorème, nous
+sommes en O(n * log(n));

@@ -5,7 +5,7 @@ compile: $(ALL)
 exec: compile
 	./tp1 < $(FILE)
 
-%: %.c
+%: src/%.c
 	gcc $< -o $@ -g
 
 clean:

@@ -1,8 +1,11 @@
+import java.io.*;
+import java.util.Random;
+
 /******************************************************************
 La classe abstraite des problèmes de décision, pbs de type Oui/non
 ******************************************************************/
 
-public abstract class PblDec {
+abstract class PblDec {
 
   public PblDec(){};
 
@@ -13,7 +16,7 @@ public abstract class PblDec {
 ****************La classe des problèmes BinPack************************
 **********************************************************************/
 
-public class PblBinPack extends PblDec {
+class PblBinPack extends PblDec {
   private int nbObjets;
   private int poids[];
   private int cap;
@@ -28,16 +31,26 @@ public class PblBinPack extends PblDec {
 
   //retourne Vrai SSi le pb a une solution
   public boolean aUneSolution() {
-    //  A compléter
-    // essaie tous les certificats un à un jusqu'à en trouver un correct -si il existe	....
+    int[] aff = new int[nbObjets];
+    for(int i = 0; i < nbObjets; i++) {
+      aff[i] = 0;
+    }
+    Certificat certificat = new CertificatBinPack(this, aff);
+    boolean b = false;
+    while(!certificat.estDernier() && !(b = certificat.estCorrect())) {
+      certificat.suivant();
+    }
+    return b;
   }
 
   //Algo non déterministe
   //si il y aune solution, au moins une exécution doit retourner Vrai
   // sinon, toutes les exécutions doivent retourner Faux
   public boolean aUneSolutionNonDeterministe() {
-    //   A compléter
     //génère alétaoirement un certificat et vérifie si il est correct
+    Certificat certificat = new CertificatBinPack(this);
+    certificat.alea();
+    return certificat.estCorrect();
   }
 
   // différents accesseurs, fonctions affichage ...
@@ -46,10 +59,10 @@ public class PblBinPack extends PblDec {
   }
 
   public int getNbSacs() {
-    return this.nbSacs
+    return this.nbSacs;
   }
 
-  public int getPoids() {
+  public int[] getPoids() {
     return this.poids;
   }
 
@@ -64,7 +77,7 @@ Un certificat est associé à un problème.
 la taille d'un certificat doit être bornée polynomialement par rapport au problème
 **********************************************************************/
 
-public interface Certificat {
+interface Certificat {
   /*retournera vrai SSi le certificat est bien correct pour le pb auquel il est associé - l'algorithme A du cours  */
 
   public boolean estCorrect();
@@ -86,7 +99,7 @@ public interface Certificat {
 **************** Les certificats pour BinPack****************************
 ************************************************************************/
 
-public class CertificatBinPack implements Certificat {
+class CertificatBinPack implements Certificat {
 
   private PblBinPack pb;
   private int[] aff;
@@ -95,6 +108,9 @@ public class CertificatBinPack implements Certificat {
   public CertificatBinPack(PblBinPack p) {
     this.pb = p;
     this.aff = new int[p.getNbObjets()];
+    for(int i = 0; i < pb.getNbObjets(); i++) {
+      aff[i] = -1;
+    }
   }
 
   public CertificatBinPack(PblBinPack p, int[] aff) {
@@ -107,14 +123,16 @@ public class CertificatBinPack implements Certificat {
   public boolean estCorrect(){
     int[] poidSacs = new int[this.pb.getNbSacs()];
     for (int i = 0; i < this.aff.length; i++){
-      if (aff[i] == NULL)
+      if (aff[i] == -1)
         return false;
 
       poidSacs[aff[i]] += this.pb.getPoids()[i];
 
-      if (poidsSacs[aff[i]] > this.pb.getCap)
+      if (poidSacs[aff[i]] > this.pb.getCap())
         return false;
     }
+
+    this.affiche();
 
     return true;
   }
@@ -142,7 +160,9 @@ public class CertificatBinPack implements Certificat {
   }
 
   public void affiche() {
-    //   A compléter
+    for(int i = 0; i < this.pb.getNbObjets(); i++) {
+      System.out.println("objet " + i + " dans sac " + this.aff[i]);
+    }
   }
 
 }
@@ -150,7 +170,8 @@ public class CertificatBinPack implements Certificat {
 ********************************Pour Tester ******************************
 **************************************************************************/
 
-.... class ... {
+class testBinPack {
+
   public static void main(String[] args) throws Exception {
     if (args.length < 3){
       System.out.println("Usage: java testBinPack <file> <mode> <nbsacs>");
