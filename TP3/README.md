@@ -19,3 +19,24 @@ L'algorithme génère des certificats de façon uniformes. Pour chaque objet, on
 -Une fois rempli, on mets les objets dans le deuxième
 -Ainsi de suite
 -Si le nombre de sac est dépassé, il n'y a pas de solutions
+
+#Question 3
+##Nombre de valeurs pour le certificat pour un n fixé
+Comme on choisit une valeur parmis les k sacs pour chaque objet, on a k^nbObjets possibilités.
+
+##Enumération des certificats
+On va choisir l'ordre du phénix ou des Jedi, on aime pas trop Voldemort et Palpatine.
+
+Pour le vrai ordre du tp, on fait du codage k-naires. On incrémente le numéro de sac du premier objet,
+On considère le tableau comme un seul nombre et on l'incrémente en base k.
+
+##Algorithme du British Museum
+
+-On génère un certificat
+-On le vérifie
+-Si il est faux
+  -On rappelle avec le successeur si possible sinon renvoyer faux
+-Sinon
+  -On renvoie vrai car le problème a une solution
+
+On est donc en O(k^nbObjets)

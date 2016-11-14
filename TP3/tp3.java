@@ -120,11 +120,16 @@ public class CertificatBinPack implements Certificat {
   }
 
   public void suivant() {
-    //   A compléter
+    int i = 0;
+    while((this.aff[i] = (this.aff[i] + 1) % this.pb.getNbSacs()) == 0)
+      i++;
   }
 
   public boolean estDernier() {
-    //   A compléter
+    for(int i = 0; i < this.aff.length; i++)
+      if(aff[i] != this.pb.getNbSacs() - 1)
+        return false;
+    return true;
   }
 
   public void alea() {
