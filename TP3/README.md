@@ -87,3 +87,8 @@ objet 2 dans sac 1
 objet 3 dans sac 2
 objet 4 dans sac 0
 true
+
+##exPBeq2
+
+$ java testBinPack DonTPNP/BinPack/exPBeq2 -exh 3
+false
