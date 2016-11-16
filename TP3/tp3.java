@@ -138,9 +138,9 @@ class CertificatBinPack implements Certificat {
   }
 
   public void suivant() {
-    int i = 0;
+    int i = this.pb.getNbObjets() - 1;
     while((this.aff[i] = (this.aff[i] + 1) % this.pb.getNbSacs()) == 0)
-      i++;
+      i--;
   }
 
   public boolean estDernier() {

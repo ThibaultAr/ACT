@@ -44,6 +44,8 @@ On est donc en O(k^nbObjets)
 #Question 4
 ##exPBeq1
 
+###Non deterministe
+
 $ java testBinPack DonTPNP/BinPack/exBPeq1 -nd 3
 objet 0 dans sac 1
 objet 1 dans sac 0
@@ -51,6 +53,8 @@ objet 2 dans sac 2
 objet 3 dans sac 0
 objet 4 dans sac 2
 true
+
+###Verification
 
 $ java testBinPack DonTPNP/BinPack/exBPeq1 -ver 3
 donnez un no de sac de 1 a 3
@@ -74,10 +78,12 @@ objet 2 dans sac 2
 objet 3 dans sac 0
 objet 4 dans sac 2
 
+###Exhaustif
+
 $ java testBinPack DonTPNP/BinPack/exBPeq1 -exh 3
 objet 0 dans sac 0
-objet 1 dans sac 2
+objet 1 dans sac 0
 objet 2 dans sac 1
-objet 3 dans sac 0
+objet 3 dans sac 2
 objet 4 dans sac 0
 true
