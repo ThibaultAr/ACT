@@ -102,3 +102,19 @@ false
 n := le nombre d'objets</br>
 x1 .. xn := le poids des objets</br>
 c := somme(i = 1 -> n)(xi) / 2
+k = 2 (le nombre de sacs)
+
+## BinPack NP-Complet ?
+
+Oui, forcément. On sait que Partition peut se réduire polynomialement en BinPack. De
+plus on sait que BinPack appartient à la classe NP. Partition est NP-complet, ce
+qui signifie que tout les problèmes NP sont réductible en lui. Ce qui veut dire que
+BinPack est réductible dans Partition. Or là, on fait l'inverse, on a prouvé que
+Partition est réductible en BinPack, Donc BinPack est NP-complet, car tout les problèmes
+sont réductible dans Partition et par conséquent à BinPack.
+
+##BinPack peut être réduit à Partition ?
+
+BinPack peut se réduire polynomialement dans Partition car Partition est NP-Complet.
+De ce fait, Tout problème NP est réductible dans Partition. BinPack est un problème
+NP, il peut donc être réductible dans Partition.
