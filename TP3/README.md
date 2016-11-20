@@ -98,11 +98,61 @@ false
 ```
 # Question 5
 ## Reduction de Partition dans BinPack
-
+```
 n := le nombre d'objets</br>
 x1 .. xn := le poids des objets</br>
 c := somme(i = 1 -> n)(xi) / 2
 k = 2 (le nombre de sacs)
+```
+##Implémentation
+
+### exPart1
+```
+$ java testPartition DonTPNP/exPart1 -exh
+objet 0 dans sac 0
+objet 1 dans sac 1
+objet 2 dans sac 0
+objet 3 dans sac 1
+objet 4 dans sac 1
+true
+```
+12 + 4 = 7 + 4 + 5
+
+### exPart2
+```
+$ java testPartition DonTPNP/exPart2 -exh
+false
+```
+
+### exPart3
+```
+$ java testPartition DonTPNP/exPart3 -exh
+objet 0 dans sac 0
+objet 1 dans sac 1
+objet 2 dans sac 0
+objet 3 dans sac 1
+objet 4 dans sac 1
+objet 5 dans sac 1
+objet 6 dans sac 0
+true
+```
+11 + 19 + 3 = 17 + 7 + 8 + 1
+
+### exPart5
+```
+$ java testPartition DonTPNP/exPart5 -exh
+objet 0 dans sac 0
+objet 1 dans sac 0
+objet 2 dans sac 1
+objet 3 dans sac 0
+objet 4 dans sac 0
+objet 5 dans sac 1
+objet 6 dans sac 1
+objet 7 dans sac 1
+objet 8 dans sac 1
+true
+```
+12 + 12 + 4 + 6 = 8 + 16 + 4 + 7 + 5
 
 ## BinPack NP-Complet ?
 
@@ -113,7 +163,7 @@ BinPack est réductible dans Partition. Or là, on fait l'inverse, on a prouvé 
 Partition est réductible en BinPack, Donc BinPack est NP-complet, car tout les problèmes
 sont réductible dans Partition et par conséquent à BinPack.
 
-##BinPack peut être réduit à Partition ?
+## BinPack peut être réduit à Partition ?
 
 BinPack peut se réduire polynomialement dans Partition car Partition est NP-Complet.
 De ce fait, Tout problème NP est réductible dans Partition. BinPack est un problème
