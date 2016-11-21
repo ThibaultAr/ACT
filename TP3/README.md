@@ -99,11 +99,18 @@ false
 # Question 5
 ## Reduction de Partition dans BinPack
 ```
-n := le nombre d'objets</br>
-x1 .. xn := le poids des objets</br>
+n := le nombre d'objets
+x1 .. xn := le poids des objets
 c := somme(i = 1 -> n)(xi) / 2
 k = 2 (le nombre de sacs)
 ```
+Nous avons choisit cette réduction car elle s'accorde bien avec le problème partition.</br>
+n appartient à O(1),</br>
+x1...xn appartient à O(n),</br>
+c appartient à O(1),</br>
+k appartient à O(1).</br>
+La réduction est donc en O(n), donc polynomial.
+
 ##Implémentation
 
 ### exPart1
@@ -156,15 +163,34 @@ true
 
 ## BinPack NP-Complet ?
 
-Oui, forcément. On sait que Partition peut se réduire polynomialement en BinPack. De
-plus on sait que BinPack appartient à la classe NP. Partition est NP-complet, ce
-qui signifie que tout les problèmes NP sont réductible en lui. Ce qui veut dire que
-BinPack est réductible dans Partition. Or là, on fait l'inverse, on a prouvé que
-Partition est réductible en BinPack, Donc BinPack est NP-complet, car tout les problèmes
-sont réductible dans Partition et par conséquent à BinPack.
+On sait que BinPack est NP. On sait que partition est NP-dur et qu'il se réduit en BinPack, donc Binpack et NP-dur.
+Sachant que Binpack est NP et NP-dur, alors il est NP-Complet.
 
 ## BinPack peut être réduit à Partition ?
 
 BinPack peut se réduire polynomialement dans Partition car Partition est NP-Complet.
 De ce fait, Tout problème NP est réductible dans Partition. BinPack est un problème
 NP, il peut donc être réductible dans Partition.
+
+# Une réduction un peu moins évidente
+## Question 6
+Partition est un cas particulier de Sum.
+Cela veut dire que l'on doit réduire Sum en Partition.
+
+## Question 7
+On divise tous les xi par la capacité et on appel Partition avec ça
+
+On réduit Sum en Partition
+```
+n := le nombre d'entier
+x1...xn := x1...xn / c
+```
+
+```
+Sum
+xi = (1, 4, 5, 3)
+c = 7
+=>
+Partition
+xi = (1/7, 4/7, 5/7, 3/7)
+```
