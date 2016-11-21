@@ -183,7 +183,8 @@ On divise tous les xi par la capacité et on appel Partition avec ça
 On réduit Sum en Partition
 ```
 n := le nombre d'entier
-x1...xn := x1...xn / c
+x1...xn := x1...xn x(n + 1)
+x(n + 1) := Différence entre somme des c et x1..xn
 ```
 
 ```
@@ -192,5 +193,5 @@ xi = (1, 4, 5, 3)
 c = 7
 =>
 Partition
-xi = (1/7, 4/7, 5/7, 3/7)
+xi = (1, 4, 5, 3, 1)
 ```
