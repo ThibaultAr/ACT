@@ -178,13 +178,13 @@ Partition est un cas particulier de Sum.
 Cela veut dire que l'on doit réduire Sum en Partition.
 
 ## Question 7
-On divise tous les xi par la capacité et on appel Partition avec ça
+On ajoute un entier qui est la différence entre deux fois la capacité et la somme des entiers
 
 On réduit Sum en Partition
 ```
 n := le nombre d'entier
 x1...xn := x1...xn x(n + 1)
-x(n + 1) := Différence entre somme des c et x1..xn
+x(n + 1) := Différence entre 2 * c et la somme des x1..xn
 ```
 
 ```
@@ -194,4 +194,37 @@ c = 7
 =>
 Partition
 xi = (1, 4, 5, 3, 1)
+```
+
+### exSum1
+```
+$ java testSum DonTPNP/exSum1
+false
+```
+
+### exSum2
+```
+$ java testSum DonTPNP/exSum2
+objet 0 dans sac 0
+objet 1 dans sac 0
+objet 2 dans sac 0
+objet 3 dans sac 0
+objet 4 dans sac 0
+objet 5 dans sac 1
+objet 6 dans sac 0
+objet 7 dans sac 1
+true
+```
+2 + 12 + 8 + 4 + 6 + 4 = 36
+
+### exSum3
+```
+$ java testSum DonTPNP/exSum3
+false
+```
+
+### exSum4
+```
+$ java testSum DonTPNP/exSum4
+false
 ```
