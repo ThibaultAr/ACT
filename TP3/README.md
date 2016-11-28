@@ -220,11 +220,81 @@ true
 ### exSum3
 ```
 $ java testSum DonTPNP/exSum3
-false
+objet 0 dans sac 0
+objet 1 dans sac 0
+objet 2 dans sac 1
+objet 3 dans sac 1
+objet 4 dans sac 0
+objet 5 dans sac 1
+objet 6 dans sac 1
+objet 7 dans sac 1
+true
 ```
+
+8 + 4 + 10 + 4 = 26 (L'objet 7 étant l'objet qu'on a ajouté)
 
 ### exSum4
 ```
 $ java testSum DonTPNP/exSum4
 false
+```
+
+## Question 8
+
+Soit x1,..,xn  
+c = cible
+
+A partir des réponses précédentes, on remarque que la capacitéde BinPack peut être
+calculé avec cette formule
+```
+(x1 + x2 + x3 + ... + (2 * c - sum)) / 2
+```
+Qu'on peut simplifier en
+```
+cap = (x1 + x2 + x3 + ... + xn) / 2 + (2 * c - sum) / 2
+
+Si (2 * c - sum) >= 0
+  cap = (x1 + x2 + x3 + ... + xn) / 2 + (2 * c) / 2 - sum / 2
+  Or (x1 + x2 + ... + xn) = sum
+  cap = (2 * c) / 2
+  cap = c
+
+Si (2 * c - sum) < 0
+  On va rendre 2 * c - sum positif
+  cap = (x1 + x2 + ... + xn - 2 * c + sum) / 2
+      = (2 * sum - 2 * c) / 2
+      = sum - c
+```
+
+On a donc :
+BinPack <- Sum  
+nbObjet = nbElement  
+x1,..,xn = x1,..,xn  
+cap = c si 2 * c - sum >= 0 sinon sum - c  
+k = 2  
+
+
+### exSum2
+```
+$ java testSumBinPack DonTPNP/exSum3
+objet 0 dans sac 0
+objet 1 dans sac 0
+objet 2 dans sac 1
+objet 3 dans sac 0
+objet 4 dans sac 1
+objet 5 dans sac 1
+objet 6 dans sac 1
+true
+```
+### exSum3
+```
+dubois@a11p15:~/Documents/M1S1/ACT/TP3$ java testSumBinPack DonTPNP/exSum2
+objet 0 dans sac 0
+objet 1 dans sac 0
+objet 2 dans sac 0
+objet 3 dans sac 0
+objet 4 dans sac 0
+objet 5 dans sac 1
+objet 6 dans sac 0
+true
 ```

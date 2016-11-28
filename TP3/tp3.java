@@ -249,6 +249,7 @@ class testPartition {
 class Sum {
 
   private Partition partition;
+  private PblBinPack bp;
 
   public void encode(int nbObjets, int[] tab, int cible) {
     partition = new Partition();
@@ -266,8 +267,21 @@ class Sum {
     partition.encode(nbObjets + 1, newTab);
   }
 
+  public void encodeBinPack(int nbObjets, int[] tab, int cible) {
+    int sum = 0;
+    for(int i = 0; i < tab.length; i++) {
+      sum += tab[i];
+    }
+    if(sum > 2 * cible) cible = sum - cible;
+    bp = new PblBinPack(nbObjets, tab, 2, cible);
+  }
+
   public boolean solve() {
     return partition.solve();
+  }
+
+  public boolean solveBinPack() {
+    return bp.aUneSolution();
   }
 }
 
@@ -284,5 +298,21 @@ class testSum {
         Sum sum = new Sum();
         sum.encode(nbObjets, poids, cap);
         System.out.println(sum.solve());
+  }
+}
+
+class testSumBinPack {
+  public static void main(String[] args) throws Exception {
+      BufferedReader donnee  //le fichier qui contient les données du pb
+      = new BufferedReader (new FileReader(args[0]));
+      int nbObjets=Integer.parseInt(donnee.readLine());
+      int poids[]=new int[nbObjets];
+      for (int i=0;i< nbObjets;i++) {
+        poids[i]=Integer.parseInt(donnee.readLine());
+      }
+      int cap = Integer.parseInt(donnee.readLine());
+      Sum sum = new Sum();
+      sum.encodeBinPack(nbObjets, poids, cap);
+      System.out.println(sum.solveBinPack());
   }
 }
