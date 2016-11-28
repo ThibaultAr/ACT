@@ -308,3 +308,14 @@ nbObjets = nbObjets
 x1,..,xn = x1,..,xn  
 cap = somme des ci / k  
 k = k  
+
+# Optimisation versus décision
+
+## Question 10
+
+### BinPackOpt1
+
+Si BinPackOpt1 était P, il serait alors possible de trouver le nombre minimal de
+sachets nécessaire pour la mise en sachets en temps polynomial. Imaginons que ce
+soit possible, alors à un moment dans l'algo on devrait utiliser BinPack pour s'assurer
+que le nombre de sachets trouvé est bien une solution.
