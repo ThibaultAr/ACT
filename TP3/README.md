@@ -298,3 +298,13 @@ objet 5 dans sac 1
 objet 6 dans sac 0
 true
 ```
+
+# Un dernière réduction
+
+## Question 9
+
+BinPack <- BinPackDiff  
+nbObjets = nbObjets  
+x1,..,xn = x1,..,xn  
+cap = somme des ci / k  
+k = k  
