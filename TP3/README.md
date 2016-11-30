@@ -305,8 +305,8 @@ true
 
 BinPack <- BinPackDiff  
 nbObjets = nbObjets  
-x1,..,xn = x1,..,xn  
-cap = somme des ci / k  
+x1,..,xn = les poids des objets, on ajoute des objets de poids cmax - cj  
+c = le maximum des cj  
 k = k  
 
 # Optimisation versus décision
