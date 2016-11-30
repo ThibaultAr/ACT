@@ -317,5 +317,25 @@ k = k
 
 Si BinPackOpt1 était P, il serait alors possible de trouver le nombre minimal de
 sachets nécessaire pour la mise en sachets en temps polynomial. Imaginons que ce
-soit possible, alors à un moment dans l'algo on devrait utiliser BinPack pour s'assurer
-que le nombre de sachets trouvé est bien une solution.
+soit possible, alors pour vérifier une solution, il faudrait vérifier qu'elle est équivalente à la meilleur
+solution. Par conséquent BinPack serait P aussi.
+
+### BinPackOpt2
+
+Si BinPackOpt2 était P, il serait alors possible d'avoir une mise en sachets correcte et qui minimise
+le nombre de sachets. Donc pour vérifier la solution, il faudrait vérifier qu'elle est équivalente
+à la meilleur solution (BinPack) mais qu'en plus, que la mise en sachets soit correcte.
+La contrainte étant plus grande que pour BinPackOpt1, BinPack devrait être P aussi.
+
+## Question 11
+
+Si BinPack était P, alors pour un k donnée, on pourrait savoir si il existe une solution.
+On pourrait alors coder BinPackOpt1 avec BinPack en incrémentant simplement k jusqu'au moment
+où on trouve une solution. BinPackOpt1 serait alors P.
+
+## Question 12
+
+Si BinPack était P, alors il est simple de trouver une k tels que le nombre de sacs
+est minimal (voir question précédente), il suffit de tester entre 1 et le k de BinPackOpt2.
+Quand on trouve un k, on sait alors qu'il existe une solution, on sait que la mise en
+sachets est correcte car c'est le plus petit k possible. BinPackOpt2 serait donc P
