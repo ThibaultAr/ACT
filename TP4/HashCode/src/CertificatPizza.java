@@ -5,8 +5,8 @@ public class CertificatPizza {
 	protected int nbJambon;
 	protected int taillePart;
 	
-	public CertificatPizza(int[][] pizza, int nbJambon, int taillePart) {
-		this.certif = pizza;
+	public CertificatPizza(int[][] certif, int nbJambon, int taillePart) {
+		this.certif = certif;
 		this.nbJambon = nbJambon;
 		this.taillePart = taillePart;
 	}
@@ -14,6 +14,7 @@ public class CertificatPizza {
 	public boolean verif(char[][] pizza) {
 		int nbPart = this.certif.length;
 		int[] jambons = new int[nbPart];
+		boolean[][] pizzaTmp = new boolean[pizza.length][pizza[0].length];
 		
 		for(int i = 0; i < nbPart; i++) {
 			int x1 = this.certif[i][0];
@@ -26,6 +27,8 @@ public class CertificatPizza {
 			for(int x = x1; x < x2; x++) {
 				for(int y = y1; y < y2; y++) {
 					if(pizza[x][y] == 'H') jambons[i]++;
+					if(pizzaTmp[x][y]) return false;
+					pizzaTmp[x][y] = true;
 				}
 			}
 			
