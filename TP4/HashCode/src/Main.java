@@ -9,6 +9,16 @@ public class Main {
 	
 	private List<int[]> parts = new ArrayList<int[]>();
 	
+	private int nbMaxPart(char[][] pizza) {
+		int sum = 0;
+		for(int i = pizza.length; i > 0; i--) {
+			for(int j = pizza[0].length; j > 0; j--) {
+				sum += i * j;
+			}
+		}
+		return sum;
+	}
+	
 	private void generateAllParts(char[][] pizza) {
 		//On sélectionne une cellule précise
 		for(int i = 0; i < pizza.length; i++) {
@@ -41,7 +51,7 @@ public class Main {
 			
 			solve.add(part);
 			partsCopy.remove(index);
-			solve.toArray(certifTmp);
+			certifTmp = solve.toArray(certifTmp);
 			CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
 			if(!c.verif(pizza)) {
 				solve.remove(part);
