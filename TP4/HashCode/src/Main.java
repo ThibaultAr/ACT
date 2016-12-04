@@ -19,16 +19,18 @@ public class Main {
 		return sum;
 	}
 	
-	private void generateAllParts(char[][] pizza, int taillePart) {
+	private void generateAllParts(char[][] pizza, int taillePart, int jambons) {
 		//On sélectionne une cellule précise
 		int index = 0;
 		
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
 				//Générer toute les parts possibles à partir de la celllule
+				int nbJambon = 0;
 				for(int k = i; k < pizza.length; k++) {
 					for(int l = j; l < pizza[0].length; l++) {
-						if(((k - i) + 1) * ((l - j) + 1) <= taillePart) 
+						if(pizza[k][l] == 'H') nbJambon++;
+						if(((k - i) + 1) * ((l - j) + 1) <= taillePart && nbJambon >= jambons) 
 							this.parts.add(new int[] {i, j, k, l});
 					}
 				}
@@ -72,7 +74,11 @@ public class Main {
 	}
 	
 	private void printSolution(int[][] solve) {
-		System.out.println(solve.length);
+		int score = 0;
+		for(int i = 0; i < solve.length; i++) {
+			score += ((solve[i][2] - solve[i][0]) + 1) * ((solve[i][3] - solve[i][1]) + 1);
+		}
+		System.out.println(score);
 		for(int i = 0; i < solve.length; i++) {
 			System.out.println(solve[i][0] + " " + solve[i][1] + " " + solve[i][2] + " " + solve[i][3]);
 		}
@@ -109,7 +115,7 @@ public class Main {
 			
 			Main main = new Main();
 //			System.out.println(main.maxNbPart(pizza));
-			main.generateAllParts(pizza, taillePart);
+			main.generateAllParts(pizza, taillePart, nbJambon);
 			main.randomSolution(nbJambon, taillePart, pizza);
 		} catch (IOException e) {
 			e.printStackTrace();
