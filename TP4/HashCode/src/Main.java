@@ -1,15 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class Main {
 	
-	private List<int[]> parts = new ArrayList<int[]>();
+	private List<int[]> parts = new LinkedList<int[]>();
 	
-	private int nbMaxPart(char[][] pizza) {
+	private int maxNbPart(char[][] pizza) {
 		int sum = 0;
 		for(int i = pizza.length; i > 0; i--) {
 			for(int j = pizza[0].length; j > 0; j--) {
@@ -19,44 +19,53 @@ public class Main {
 		return sum;
 	}
 	
-	private void generateAllParts(char[][] pizza) {
+	private void generateAllParts(char[][] pizza, int taillePart) {
 		//On sélectionne une cellule précise
+		int index = 0;
+		
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
 				//Générer toute les parts possibles à partir de la celllule
 				for(int k = i; k < pizza.length; k++) {
 					for(int l = j; l < pizza[0].length; l++) {
-						int[] partsArray = new int[4];
-						partsArray[0] = i;
-						partsArray[1] = j;
-						partsArray[2] = l;
-						partsArray[3] = k;
-						this.parts.add(partsArray);
+						if(((k - i) + 1) * ((l - j) + 1) <= taillePart) 
+							this.parts.add(new int[] {i, j, k, l});
 					}
 				}
 			}
 		}
 	}
 	
+//	private int[][] shuffle() {
+//		int [][] shuffleParts = this.parts.clone();
+//		Random random = new Random();
+//		for(int i = this.parts.length - 1; i > 1; i--) {
+//			int[] tmp = shuffleParts[i];
+//			int j = random.nextInt(i);
+//			shuffleParts[i] = shuffleParts[j];
+//			shuffleParts[j] = tmp;
+//		}
+//		return shuffleParts;
+//	}
+	
 	private void randomSolution(int nbJambon, int taillePart, char[][] pizza) {
-		List<int[]> solve = new ArrayList<int[]>();
-		List<int[]> partsCopy = new ArrayList<int[]>(parts);
-		Random random = new Random();
+		List<int[]> solve = new LinkedList<int[]>();
+		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
 		int[][] certif = null;
 		
-		while(!partsCopy.isEmpty()) {
-			int index = random.nextInt(partsCopy.size());
-			int[] part = partsCopy.get(index);
+		Collections.shuffle(partsCopy);
+		
+		for(int[] part : partsCopy) {
 			int[][] certifTmp = new int[solve.size()][4];
 			
 			solve.add(part);
-			partsCopy.remove(index);
 			certifTmp = solve.toArray(certifTmp);
 			CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
 			if(!c.verif(pizza)) {
 				solve.remove(part);
+			} else {				
+				certif = certifTmp;
 			}
-			certif = certifTmp;
 		}
 		
 		this.printSolution(certif);
@@ -99,7 +108,8 @@ public class Main {
 			}
 			
 			Main main = new Main();
-			main.generateAllParts(pizza);
+//			System.out.println(main.maxNbPart(pizza));
+			main.generateAllParts(pizza, taillePart);
 			main.randomSolution(nbJambon, taillePart, pizza);
 		} catch (IOException e) {
 			e.printStackTrace();

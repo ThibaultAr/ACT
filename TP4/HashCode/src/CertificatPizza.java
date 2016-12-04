@@ -40,17 +40,20 @@ public class CertificatPizza {
 			int x2 = this.certif[i][2];
 			int y2 = this.certif[i][3];
 			
-			if(((x2 - x1) + 1) * ((y2 - y1) + 1) > taillePart) return false;
+			if(((x2 - x1) + 1) * ((y2 - y1) + 1) > taillePart)
+				return false;
 			
-			for(int x = x1; x < x2; x++) {
-				for(int y = y1; y < y2; y++) {
+			for(int x = x1; x <= x2; x++) {
+				for(int y = y1; y <= y2; y++) {
 					if(pizzaTmp[x][y]) return false;
 					pizzaTmp[x][y] = true;
 					if(pizza[x][y] == 'H') jambons[i]++;
 				}
 			}
 			
-			if(jambons[i] < this.nbJambon) return false;
+			if(jambons[i] < this.nbJambon) {
+				return false;
+			}
 		}
 				
 		return true;
