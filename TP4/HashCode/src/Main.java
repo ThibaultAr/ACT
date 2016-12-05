@@ -113,6 +113,7 @@ public class Main {
 		
 		Cell hole = this.arrayHole(certif, pizza);
 		if(hole != null) {
+			//combler le trou
 			
 		}
 		
