@@ -1,7 +1,8 @@
+import java.util.List;
 
 public class CertificatPizza {
 	
-	protected int[][] certif;
+	protected Part[] certif;
 	protected int nbJambon;
 	protected int taillePart;
 	
@@ -12,10 +13,14 @@ public class CertificatPizza {
 	 * une part.
 	 * Le certificat est de taille 4 * taillePizza / taillePart
 	 */
-	public CertificatPizza(int[][] certif, int nbJambon, int taillePart) {
+	public CertificatPizza(Part[] certif, int nbJambon, int taillePart) {
 		this.certif = certif;
 		this.nbJambon = nbJambon;
 		this.taillePart = taillePart;
+	}
+	
+	public CertificatPizza(List<Part> certif, int nbJambon, int taillePart) {
+		this((Part[])certif.toArray(), nbJambon, taillePart);
 	}
 	
 	/*
@@ -35,16 +40,13 @@ public class CertificatPizza {
 		boolean[][] pizzaTmp = new boolean[pizza.length][pizza[0].length];
 		
 		for(int i = 0; i < nbPart; i++) {
-			int x1 = this.certif[i][0];
-			int y1 = this.certif[i][1];
-			int x2 = this.certif[i][2];
-			int y2 = this.certif[i][3];
+			Part part = this.certif[i];
 			
-			if(((x2 - x1) + 1) * ((y2 - y1) + 1) > taillePart)
+			if(part.surface() > taillePart)
 				return false;
 			
-			for(int x = x1; x <= x2; x++) {
-				for(int y = y1; y <= y2; y++) {
+			for(int x = part.getX1(); x <= part.getX2(); x++) {
+				for(int y = part.getY1(); y <= part.getY2(); y++) {
 					if(pizzaTmp[x][y]) return false;
 					pizzaTmp[x][y] = true;
 					if(pizza[x][y] == 'H') jambons[i]++;
@@ -59,7 +61,7 @@ public class CertificatPizza {
 		return true;
 	}
 	
-	public int[][] getCertificat() {
+	public Part[] getCertificat() {
 		return this.certif;
 	}
 }

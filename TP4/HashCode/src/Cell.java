@@ -20,7 +20,7 @@ public class Cell {
 		return x >= x1 && x <= x2 && y >= y1 && y <= y2;
 	}
 	
-	public boolean containsOnPart(int[] parts) {
-		return this.containsOnPart(parts[0], parts[1], parts[2], parts[3]);
+	public boolean containsOnPart(Part part) {
+		return this.containsOnPart(part.getX1(), part.getY1(), part.getX2(), part.getX2());
 	}
 }

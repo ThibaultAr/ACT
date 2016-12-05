@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Main {
 	
-	private List<int[]> parts = new LinkedList<int[]>();
+	private List<Part> parts = new LinkedList<Part>();
 	
 	private int maxNbPart(char[][] pizza) {
 		int sum = 0;
@@ -29,7 +29,7 @@ public class Main {
 					for(int l = j; l < pizza[0].length; l++) {
 						if(pizza[k][l] == 'H') nbJambon++;
 						if(((k - i) + 1) * ((l - j) + 1) <= taillePart && nbJambon >= jambons) 
-							this.parts.add(new int[] {i, j, k, l});
+							this.parts.add(new Part(i, j, k, l));
 					}
 				}
 			}
@@ -48,15 +48,15 @@ public class Main {
 //		return shuffleParts;
 //	}
 	
-	private int[][] randomSolution(int nbJambon, int taillePart, char[][] pizza) {
-		List<int[]> solve = new LinkedList<int[]>();
-		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
-		int[][] certif = null;
+	private Part[] randomSolution(int nbJambon, int taillePart, char[][] pizza) {
+		List<Part> solve = new LinkedList<Part>();
+		List<Part> partsCopy = new LinkedList<Part>(this.parts);
+		Part[] certif = null;
 		
 		Collections.shuffle(partsCopy);
 		
-		for(int[] part : partsCopy) {
-			int[][] certifTmp = new int[solve.size()][4];
+		for(Part part : partsCopy) {
+			Part[] certifTmp = new Part[solve.size()];
 			
 			solve.add(part);
 			certifTmp = solve.toArray(certifTmp);
@@ -71,13 +71,13 @@ public class Main {
 		return certif;
 	}
 	
-	private int[][] gloutonSolution(int nbJambon, int taillePart, char[][] pizza) {
-		List<int[]> solve = new LinkedList<int[]>();
-		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
-		int[][] certif = null;
+	private Part[] gloutonSolution(int nbJambon, int taillePart, char[][] pizza) {
+		List<Part> solve = new LinkedList<Part>();
+		List<Part> partsCopy = new LinkedList<Part>(this.parts);
+		Part[] certif = null;
 		
-		for(int[] part : partsCopy) {
-			int[][] certifTmp = new int[solve.size()][4];
+		for(Part part : partsCopy) {
+			Part[] certifTmp = new Part[solve.size()];
 			
 			solve.add(part);
 			certifTmp = solve.toArray(certifTmp);
@@ -92,41 +92,39 @@ public class Main {
 		return certif;
 	}
 	
-	private int[][] holeSolution(int nbJambon, int taillePart, char[][] pizza) {
-		List<int[]> solve = new LinkedList<int[]>();
-		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
-		int[][] certif = null;
+	private Part[] holeSolution(int nbJambon, int taillePart, char[][] pizza) {
+		List<Part> solve = new LinkedList<Part>();
+		Part[] certif = null;
 		
 		//glouton solution
-		for(int[] part : partsCopy) {
-			int[][] certifTmp = new int[solve.size()][4];
-			
+		for(Part part : this.parts) {
 			solve.add(part);
-			certifTmp = solve.toArray(certifTmp);
-			CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
+			CertificatPizza c = new CertificatPizza(solve, nbJambon, taillePart);
 			if(!c.verif(pizza)) {
 				solve.remove(part);
-			} else {				
-				certif = certifTmp;
 			}
 		}
 		
-		Cell hole = this.arrayHole(certif, pizza);
+		Cell hole = this.arrayHole(solve, pizza);
 		if(hole != null) {
-			//combler le trou
-			
+			List<Part> partOfHole = new LinkedList<Part>();
+			for(Part part : this.parts) {
+				if(hole.containsOnPart(part)) {
+					partOfHole.add(part);
+				}
+			}
 		}
 		
 		return certif;
 	}
 	
-	private Cell arrayHole(int[][] certif, char[][] pizza) {
+	private Cell arrayHole(List<Part> certif, char[][] pizza) {
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
 				Cell cell = new Cell(i, j);
 				boolean isHole = false;
-				for(int k = 0; k < certif.length; k++) {
-					isHole |= !cell.containsOnPart(certif[k]);
+				for(Part part : certif) {
+					isHole |= !cell.containsOnPart(part);
 				}
 				if(isHole) return cell;
 			}
@@ -134,10 +132,10 @@ public class Main {
 		return null;
 	}
 	
-	private void printSolution(int[][] solve) {
+	private void printSolution(Part[] solve) {
 		System.out.println(solve.length);
 		for(int i = 0; i < solve.length; i++) {
-			System.out.println(solve[i][0] + " " + solve[i][1] + " " + solve[i][2] + " " + solve[i][3]);
+			System.out.println(solve[i]);
 		}
 	}
 	
@@ -173,7 +171,7 @@ public class Main {
 			Main main = new Main();
 //			System.out.println(main.maxNbPart(pizza));
 			main.generateAllParts(pizza, taillePart, nbJambon);
-			int [][] solve = main.gloutonSolution(nbJambon, taillePart, pizza);
+			Part[] solve = main.gloutonSolution(nbJambon, taillePart, pizza);
 			main.printSolution(solve);
 		} catch (IOException e) {
 			e.printStackTrace();
