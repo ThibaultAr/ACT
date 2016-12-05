@@ -21,8 +21,6 @@ public class Main {
 	
 	private void generateAllParts(char[][] pizza, int taillePart, int jambons) {
 		//On sélectionne une cellule précise
-		int index = 0;
-		
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
 				//Générer toute les parts possibles à partir de la celllule
@@ -50,7 +48,7 @@ public class Main {
 //		return shuffleParts;
 //	}
 	
-	private void randomSolution(int nbJambon, int taillePart, char[][] pizza) {
+	private int[][] randomSolution(int nbJambon, int taillePart, char[][] pizza) {
 		List<int[]> solve = new LinkedList<int[]>();
 		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
 		int[][] certif = null;
@@ -70,15 +68,73 @@ public class Main {
 			}
 		}
 		
-		this.printSolution(certif);
+		return certif;
+	}
+	
+	private int[][] gloutonSolution(int nbJambon, int taillePart, char[][] pizza) {
+		List<int[]> solve = new LinkedList<int[]>();
+		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
+		int[][] certif = null;
+		
+		for(int[] part : partsCopy) {
+			int[][] certifTmp = new int[solve.size()][4];
+			
+			solve.add(part);
+			certifTmp = solve.toArray(certifTmp);
+			CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
+			if(!c.verif(pizza)) {
+				solve.remove(part);
+			} else {				
+				certif = certifTmp;
+			}
+		}
+		
+		return certif;
+	}
+	
+	private int[][] holeSolution(int nbJambon, int taillePart, char[][] pizza) {
+		List<int[]> solve = new LinkedList<int[]>();
+		List<int[]> partsCopy = new LinkedList<int[]>(this.parts);
+		int[][] certif = null;
+		
+		//glouton solution
+		for(int[] part : partsCopy) {
+			int[][] certifTmp = new int[solve.size()][4];
+			
+			solve.add(part);
+			certifTmp = solve.toArray(certifTmp);
+			CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
+			if(!c.verif(pizza)) {
+				solve.remove(part);
+			} else {				
+				certif = certifTmp;
+			}
+		}
+		
+		Cell hole = this.arrayHole(certif, pizza);
+		if(hole != null) {
+			
+		}
+		
+		return certif;
+	}
+	
+	private Cell arrayHole(int[][] certif, char[][] pizza) {
+		for(int i = 0; i < pizza.length; i++) {
+			for(int j = 0; j < pizza[0].length; j++) {
+				Cell cell = new Cell(i, j);
+				boolean isHole = false;
+				for(int k = 0; k < certif.length; k++) {
+					isHole |= !cell.containsOnPart(certif[k]);
+				}
+				if(isHole) return cell;
+			}
+		}
+		return null;
 	}
 	
 	private void printSolution(int[][] solve) {
-		int score = 0;
-		for(int i = 0; i < solve.length; i++) {
-			score += ((solve[i][2] - solve[i][0]) + 1) * ((solve[i][3] - solve[i][1]) + 1);
-		}
-		System.out.println(score);
+		System.out.println(solve.length);
 		for(int i = 0; i < solve.length; i++) {
 			System.out.println(solve[i][0] + " " + solve[i][1] + " " + solve[i][2] + " " + solve[i][3]);
 		}
@@ -116,7 +172,8 @@ public class Main {
 			Main main = new Main();
 //			System.out.println(main.maxNbPart(pizza));
 			main.generateAllParts(pizza, taillePart, nbJambon);
-			main.randomSolution(nbJambon, taillePart, pizza);
+			int [][] solve = main.gloutonSolution(nbJambon, taillePart, pizza);
+			main.printSolution(solve);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
