@@ -1,5 +1,5 @@
 
-public class Part {
+public class Part implements Comparable<Part> {
 	
 	private int x1, y1, x2, y2;
 	
@@ -32,5 +32,25 @@ public class Part {
 	
 	public String toString() {
 		return x1 + " " + y1 + " " + x2 + " " + y2; 
+	}
+	
+	public boolean equals(Object obj) {
+		if(obj instanceof Part) {
+			Part part = (Part) obj;
+			return part.x1 == x1 && part.x2 == x2 && part.y1 == y1 && part.y2 == y2;
+		}
+		return false;
+	}
+	
+	public boolean isContainsOn(Part part) {
+		return x1 >= part.x1 && x1 <= part.x2 && y1 >= part.y1 && y1 <= part.y2
+			|| x2 >= part.x1 && x2 <= part.x2 && y1 >= part.y1 && y1 <= part.y2
+			|| x1 >= part.x1 && x1 <= part.x2 && y2 >= part.y1 && y2 <= part.y2
+			|| x2 >= part.x1 && x2 <= part.x2 && y2 >= part.y1 && y2 <= part.y2;
+	}
+
+	@Override
+	public int compareTo(Part o) {
+		return o.surface() - this.surface();
 	}
 }

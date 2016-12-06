@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class CertificatPizza {
 	
 	protected Part[] certif;
@@ -17,10 +15,6 @@ public class CertificatPizza {
 		this.certif = certif;
 		this.nbJambon = nbJambon;
 		this.taillePart = taillePart;
-	}
-	
-	public CertificatPizza(List<Part> certif, int nbJambon, int taillePart) {
-		this((Part[])certif.toArray(), nbJambon, taillePart);
 	}
 	
 	/*
