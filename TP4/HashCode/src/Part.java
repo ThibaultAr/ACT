@@ -43,12 +43,34 @@ public class Part implements Comparable<Part> {
 	}
 	
 	public boolean isContainsOn(Part part) {
-		return x1 >= part.x1 && x1 <= part.x2 && y1 >= part.y1 && y1 <= part.y2
-			|| x2 >= part.x1 && x2 <= part.x2 && y1 >= part.y1 && y1 <= part.y2
-			|| x1 >= part.x1 && x1 <= part.x2 && y2 >= part.y1 && y2 <= part.y2
+		return x1 >= part.x1 && x1 <= part.x2 && (y1 >= part.y1 && y1 <= part.y2 || y1 <= part.y1 && y2 >= part.y2)
+			|| x2 >= part.x1 && x2 <= part.x2 && (y1 >= part.y1 && y1 <= part.y2 || y1 <= part.y1 && y2 >= part.y2)
+			|| (x1 >= part.x1 && x1 <= part.x2 || x1 <= part.x1 && x2 >= part.x2) && y2 >= part.y1 && y2 <= part.y2
 			|| x2 >= part.x1 && x2 <= part.x2 && y2 >= part.y1 && y2 <= part.y2;
 	}
+	
+	public boolean isStrictlyContainsOn(Part part) {
+		return x1 >= part.x1 && x2 <= part.x2 && y1 >= part.y1 && y2 <= part.y2;
+	}
+	
+	public boolean isCellContainIn(Cell cell) {
+		return cell.containsOnPart(this);
+	}
+	
+	public boolean isCellContainIn(int x, int y) {
+		return this.isCellContainIn(new Cell(x, y));
+	}
 
+	public int getNbJambon(char[][] pizza) {
+		int nbJambon = 0;
+		for(int x = x1; x <= x2; x++) {
+			for(int y = y1; y <= y2; y++) {
+				if(pizza[x][y] == 'H') nbJambon++;
+			}
+		}
+		return nbJambon;
+	}
+	
 	@Override
 	public int compareTo(Part o) {
 		return o.surface() - this.surface();

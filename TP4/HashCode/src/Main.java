@@ -25,29 +25,16 @@ public class Main {
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
 				//Générer toute les parts possibles à partir de la celllule
-				int nbJambon = 0;
 				for(int k = i; k < pizza.length; k++) {
 					for(int l = j; l < pizza[0].length; l++) {
-						if(pizza[k][l] == 'H') nbJambon++;
-						if(((k - i) + 1) * ((l - j) + 1) <= taillePart && nbJambon >= jambons) 
-							this.parts.add(new Part(i, j, k, l));
+						Part part = new Part(i, j, k, l);
+						if(part.surface() <= taillePart && part.getNbJambon(pizza) >= jambons) 
+							this.parts.add(part);
 					}
 				}
 			}
 		}
 	}
-	
-//	private int[][] shuffle() {
-//		int [][] shuffleParts = this.parts.clone();
-//		Random random = new Random();
-//		for(int i = this.parts.length - 1; i > 1; i--) {
-//			int[] tmp = shuffleParts[i];
-//			int j = random.nextInt(i);
-//			shuffleParts[i] = shuffleParts[j];
-//			shuffleParts[j] = tmp;
-//		}
-//		return shuffleParts;
-//	}
 	
 	private Part[] randomSolution(int nbJambon, int taillePart, char[][] pizza) {
 		List<Part> solve = new LinkedList<Part>();
@@ -95,7 +82,7 @@ public class Main {
 		return certif;
 	}
 	
-	private Part[] holeSolution(int nbJambon, int taillePart, char[][] pizza, int it) {
+	private Part[] holeSolution(int nbJambon, int taillePart, char[][] pizza, long it) {
 		List<Part> solve = new LinkedList<Part>();
 		Collections.sort(parts);
 		
@@ -110,95 +97,91 @@ public class Main {
 			}
 		}
 		
-		Collections.reverse(parts);
+		List<Cell> holes = new ArrayList<Cell>();
+		int bestScore = this.computeScore(solve);
 		
-		List<Part> betterSolve = new LinkedList<Part>();
+		List<Part> bestSolve = new LinkedList<Part>(solve);
 		
-		for(int i = 1; i <= it; i++) {	
-			Cell hole = this.hole(solve, pizza, i);
-			List<Part> toRemove = new LinkedList<Part>();
-			List<Part> onHole = new LinkedList<Part>();
+		this.hole(solve, pizza, holes);
+		int i = 0;
+		
+		long time = System.currentTimeMillis();
+		
+		for(int j = 0; j < holes.size(); j++) {
+			Cell cell = holes.get(j);
+			List<Part> bestPartHole = new LinkedList<Part>();
 			
-			for(Part part : parts) {
-				this.addRemovedPart(new Cell(hole.getX() - 1, hole.getY()), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX() + 1, hole.getY()), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX(), hole.getY() + 1), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX(), hole.getY() - 1), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX() - 1, hole.getY() + 1), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX() + 1, hole.getY() - 1), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX() + 1, hole.getY() + 1), toRemove, part);
-				this.addRemovedPart(new Cell(hole.getX() - 1, hole.getY() - 1), toRemove, part);
-			
-				if(hole.containsOnPart(part) && !onHole.contains(part)) onHole.add(part);
+			for(Part part : this.parts) {
+				if(part.isCellContainIn(cell))
+					bestPartHole.add(part);
 			}
 			
-			solve.removeAll(toRemove);
 			
-			int surface = 0;
-			Part partToAdd = null;
-			for(Part part : onHole) {
-				if(hole.containsOnPart(part)) {
-					if(surface < part.surface()) {
-						Part[] certifTmp = new Part[solve.size()];
-						solve.add(part);
-						certifTmp = solve.toArray(certifTmp);
-						CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
-						if(!c.verif(pizza)) {
-							if(partToAdd != null) solve.remove(partToAdd);
-							surface = part.surface();
-							partToAdd = part;
-							solve.remove(part);
-						}
+			
+			for(Part bestPart : bestPartHole) {			
+				List<Part> toRemove = new LinkedList<Part>();
+				List<Part> allPossibleLocalParts = new LinkedList<Part>();
+				
+				for(Part part : solve) {
+					if(part.isContainsOn(bestPart) || bestPart.isContainsOn(part)) {
+						toRemove.add(part);
 					}
 				}
 				
-			}
-		
-			for(Part part : this.parts) {
-				if(!solve.contains(part)) {				
-					Part[] certifTmp = new Part[solve.size()];
-					solve.add(part);
-					certifTmp = solve.toArray(certifTmp);
-					CertificatPizza c = new CertificatPizza(certifTmp, nbJambon, taillePart);
-					if(!c.verif(pizza)) {
-						solve.remove(part);
+				solve.removeAll(toRemove);
+				solve.add(bestPart);
+				
+				for(Part removed : toRemove) {
+					for(Part part : this.parts) {
+						if(part.isStrictlyContainsOn(removed) && !bestPart.isContainsOn(part) 
+								&& !part.isContainsOn(bestPart) && part.surface() >= taillePart / 2) allPossibleLocalParts.add(part);
 					}
 				}
+				
+				Tree tree = new Tree();
+				tree.construct(allPossibleLocalParts);
+				
+				solve.addAll(tree.bestList());
+				tree.free();
+				tree = null;
+				
+				if(bestScore < this.computeScore(solve)) {
+					bestScore = this.computeScore(solve);
+					bestSolve = new LinkedList<Part>(solve);
+					j = 0;
+					i = 0;
+					holes = new ArrayList<Cell>();
+					this.hole(solve, pizza, holes);
+				} else {
+					solve = new LinkedList<Part>(bestSolve);
+					i++;
+				}
+				if(System.currentTimeMillis() - time >= it * 1000) break;
 			}
-			
-			if(this.computeScore(betterSolve) < this.computeScore(solve))
-				betterSolve = new LinkedList<Part>(solve);
-			else
-				solve = new LinkedList<Part>(betterSolve);
+			if(System.currentTimeMillis() - time >= it * 1000) break;
 		}
+			
 		
-		Part[] certif = new Part[betterSolve.size()];
-		certif = betterSolve.toArray(certif);
+		Part[] certif = new Part[bestSolve.size()];
+		certif = bestSolve.toArray(certif);
 		
 		return certif;
 	}
 	
-	private void addRemovedPart(Cell cell, List<Part> toRemove, Part part) {
-		if(cell.containsOnPart(part)) {
-			if(!toRemove.contains(part))toRemove.add(part);
-		}
-	}
-	
-	private Cell hole(List<Part> certif, char[][] pizza, int it) {
+	private void hole(List<Part> certif, char[][] pizza, List<Cell> holes) {
 		for(int i = 0; i < pizza.length; i++) {
 			for(int j = 0; j < pizza[0].length; j++) {
-				Cell cell = new Cell(j, i);
+				Cell cell = new Cell(i, j);
 				boolean isHole = true;
 				for(Part part : certif) {
 					if(cell.containsOnPart(part)) isHole = false;
 				}
 				
 				if(isHole) {
-					if(--it == 0) return cell;
+					holes.add(cell);
 				}
 			}
 		}
-		return null;
 	}
 	
 	private void printSolution(Part[] solve) {
@@ -248,7 +231,7 @@ public class Main {
 			Main main = new Main();
 //			System.out.println(main.maxNbPart(pizza));
 			main.generateAllParts(pizza, taillePart, nbJambon);
-			Part[] solve = main.holeSolution(nbJambon, taillePart, pizza, 10);
+			Part[] solve = main.holeSolution(nbJambon, taillePart, pizza, 10 * 60);
 			main.printSolution(solve);
 		} catch (IOException e) {
 			e.printStackTrace();

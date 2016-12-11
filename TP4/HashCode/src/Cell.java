@@ -21,6 +21,6 @@ public class Cell {
 	}
 	
 	public boolean containsOnPart(Part part) {
-		return this.containsOnPart(part.getX1(), part.getY1(), part.getX2(), part.getX2());
+		return this.containsOnPart(part.getX1(), part.getY1(), part.getX2(), part.getY2());
 	}
 }

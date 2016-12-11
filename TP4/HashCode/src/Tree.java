@@ -46,18 +46,26 @@ public class Tree {
 		}
 	}
 	
-	public void construct(List<Node> nodes) {
-		if(nodes.isEmpty()) {
-			return;
-		} else {
-			for(Node node : nodes) {
-				Tree tree = new Tree(node.getPart());
-				this.addChild(tree);
+	public void free() {
+		for(Tree tree : this.children) {
+			tree.free();
+			this.children = null;
+		}
+	}
+	
+	public void construct(List<Part> parts) {
+		if(!parts.isEmpty()) {
+			for(Part part : parts) {
+				Tree tree = new Tree(part);
+				this.children.add(tree);
 				
-				List<Node> newNodes = new ArrayList<>(nodes);
-				newNodes.removeAll(node.getArcs());
+				List<Part> childrenParts = new LinkedList<Part>();
 				
-				tree.construct(newNodes);
+				for(Part localPart : parts) {
+					if(!localPart.isContainsOn(part) && !part.isContainsOn(localPart) && localPart != part) childrenParts.add(localPart);
+				}
+				
+				tree.construct(childrenParts);
 			}
 		}
 	}
