@@ -42,11 +42,22 @@ public class Part implements Comparable<Part> {
 		return false;
 	}
 	
-	public boolean isContainsOn(Part part) {
-		return x1 >= part.x1 && x1 <= part.x2 && (y1 >= part.y1 && y1 <= part.y2 || y1 <= part.y1 && y2 >= part.y2)
-			|| x2 >= part.x1 && x2 <= part.x2 && (y1 >= part.y1 && y1 <= part.y2 || y1 <= part.y1 && y2 >= part.y2)
-			|| (x1 >= part.x1 && x1 <= part.x2 || x1 <= part.x1 && x2 >= part.x2) && y2 >= part.y1 && y2 <= part.y2
-			|| x2 >= part.x1 && x2 <= part.x2 && y2 >= part.y1 && y2 <= part.y2;
+	public boolean isContainsOn(Part part, char[][] pizza) {
+		boolean[][] bPizza = new boolean[pizza.length][pizza[0].length];
+		
+		for(int i = x1; i <= x2; i++) {
+			for(int j = y1; j <= y2; j++) {
+				bPizza[i][j] = true;
+			}
+		}
+		
+		for(int i = part.x1; i <= part.x2; i++) {
+			for(int j = part.y1; j <= part.y2; j++) {
+				if(bPizza[i][j] == true) return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public boolean isStrictlyContainsOn(Part part) {

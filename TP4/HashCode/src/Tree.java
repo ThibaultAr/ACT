@@ -46,14 +46,7 @@ public class Tree {
 		}
 	}
 	
-	public void free() {
-		for(Tree tree : this.children) {
-			tree.free();
-			this.children = null;
-		}
-	}
-	
-	public void construct(List<Part> parts) {
+	public void construct(List<Part> parts, char[][] pizza) {
 		if(!parts.isEmpty()) {
 			for(Part part : parts) {
 				Tree tree = new Tree(part);
@@ -62,10 +55,10 @@ public class Tree {
 				List<Part> childrenParts = new LinkedList<Part>();
 				
 				for(Part localPart : parts) {
-					if(!localPart.isContainsOn(part) && !part.isContainsOn(localPart) && localPart != part) childrenParts.add(localPart);
+					if(!localPart.isContainsOn(part, pizza) && localPart != part) childrenParts.add(localPart);
 				}
 				
-				tree.construct(childrenParts);
+				tree.construct(childrenParts, pizza);
 			}
 		}
 	}
